@@ -78,7 +78,7 @@ local levelRoomCopyFromArgs = {
     "RoomsListID",
     "ReplaceVSStreak",
     "Music",
-    "NoChampions"
+    "NoChampions",
 }
 
 ---@param layoutName string
@@ -125,6 +125,7 @@ end
 ---@field NoChampions boolean
 ---@field JustCleared boolean
 ---@field IsPersistentRoom boolean
+
 StageAPI.LevelRoom = StageAPI.Class("LevelRoom")
 StageAPI.NextUniqueRoomIdentifier = 0
 function StageAPI.LevelRoom:Init(args, ...)
@@ -651,7 +652,7 @@ local saveDataCopyDirectly = {
     "IsClear","WasClearAtStart","RoomsListName","RoomsListID","LayoutName","SpawnSeed","AwardSeed","DecorationSeed",
     "FirstLoad","Shape","RoomType","TypeOverride","PersistentData","IsExtraRoom","LastPersistentIndex",
     "RequireRoomType", "IgnoreRoomRules", "VisitCount", "ClearCount", "LevelIndex","HasWaterPits","ChallengeDone",
-    "SurpriseMiniboss", "FromData", "Dimension", "NoChampions"
+    "SurpriseMiniboss", "FromData", "Dimension", "NoChampions",
 }
 
 function StageAPI.LevelRoom:GetSaveData(isExtraRoom)
@@ -808,4 +809,11 @@ function StageAPI.LevelRoom:GetPlayingMusic()
     if musicID then
         return musicID, not shared.Room:IsClear()
     end
+end
+
+function StageAPI.LevelRoom:IncrementClear()
+    self.ClearCount = self.ClearCount + 1
+    StageAPI.CallCallbacks(Callbacks.POST_ROOM_CLEAR, false)
+    self.JustCleared = true
+    StageAPI.RecentRoomClearSpawnPosition = nil
 end
