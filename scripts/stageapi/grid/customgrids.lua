@@ -588,15 +588,15 @@ function StageAPI.GetNearestCustomGrid(position, name)
 end
 
 function StageAPI.GetCustomGridIndices(name)
-    local indeces = {}
+    local indices = {}
     local grids = StageAPI.GetCustomGrids(nil, name)
     for _, customGrid in ipairs(grids) do
         if customGrid:IsOnGrid() and customGrid.GridIndex then
-            indeces[#indices + 1] = customGrid.GridIndex
+            indices[#indices + 1] = customGrid.GridIndex
         end
     end
 
-    return indeces
+    return indices
 end
 
 mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
